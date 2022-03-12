@@ -9,7 +9,7 @@ class _DetectionPageState extends State<DetectionPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("DetectionPage"),
+      child: Center(child: Text("DetectionPage")),
     );
   }
 }

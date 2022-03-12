@@ -12,6 +12,6 @@ header(context,
     ),
     automaticallyImplyLeading: removeback ? false : true,
     centerTitle: true,
-    backgroundColor: Color.fromARGB(255, 32, 153, 59),
+    backgroundColor: Color.fromARGB(255, 26, 145, 50),
   );
 }
