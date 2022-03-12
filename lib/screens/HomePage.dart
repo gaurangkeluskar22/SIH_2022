@@ -63,9 +63,9 @@ class _HomePageState extends State<HomePage> {
         onTap: onTap,
         activeColor: Theme.of(context).primaryColor,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search),label: "Detection"),
+          BottomNavigationBarItem(icon: Icon(Icons.search),label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.comment),label: "Community"),
-          BottomNavigationBarItem(icon: Icon(Icons.recommend),label: "Recommendation"),
+          BottomNavigationBarItem(icon: Icon(Icons.recommend),label: "Identification"),
         ],
       ),
     );
