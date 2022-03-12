@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1034964593930",
+    "project_id": "croppred-db5f7",
+    "storage_bucket": "croppred-db5f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034964593930:android:8d1d125a7a87e880ae5ef3",
+        "android_client_info": {
+          "package_name": "com.example.croppred"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034964593930-bfvagflitb8tg8eaq3npamahivb67gqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoe_iNWiyj2LsS2RGdYhEibk3znHhjIOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034964593930-bfvagflitb8tg8eaq3npamahivb67gqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
