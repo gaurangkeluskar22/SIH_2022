@@ -1,10 +1,14 @@
 import 'package:croppred/Shared/header.dart';
+import 'package:croppred/screens/SignupPage_Experts.dart';
+import 'package:croppred/screens/SignupPage_Farmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../Animation/FadeAnimation.dart';
 import '../community/CommunityPage.dart';
 import '../detection/DetectionPage.dart';
 import '../recommendation/RecommendationPage.dart';
 import '../Shared/progress.dart';
+import './LoginPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isAuth = true;
+  bool isAuth = false;
   bool isLoading = false;
   PageController pageController;
   int pageIndex = 0;
@@ -63,9 +67,11 @@ class _HomePageState extends State<HomePage> {
         onTap: onTap,
         activeColor: Theme.of(context).primaryColor,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.comment),label: "Community"),
-          BottomNavigationBarItem(icon: Icon(Icons.recommend),label: "Identification"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.comment), label: "Community"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.recommend), label: "Identification"),
         ],
       ),
     );
@@ -75,43 +81,135 @@ class _HomePageState extends State<HomePage> {
     return isLoading
         ? circularProgress()
         : Scaffold(
-            backgroundColor: Colors.white,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                    child: isAuth
-                        ? CircularProgressIndicator(
-                            backgroundColor: Colors.blue,
-                          )
-                        : Image.asset(
-                            'assets/images/logo.png',
-                            height: 250.0,
-                          )),
-                Text(
-                  'CropPred',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 32.0,
-                    letterSpacing: 3.0,
-                    fontFamily: 'mont',
-                  ),
-                ),
-                SizedBox(
-                  height: 100.0,
-                ),
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      //signInWithGoogle();
-                    },
-                    child: Image.asset(
-                      'assets/images/google_signin_button.png',
-                      height: 65.0,
+            body: SafeArea(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        FadeAnimation(
+                            1,
+                            Text(
+                              "Welcome",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                            1.2,
+                            Text(
+                              "Automatic identity verification which enables you to verify your identity",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[700], fontSize: 15),
+                            )),
+                      ],
                     ),
-                  ),
+                    FadeAnimation(
+                        1.4,
+                        Container(
+                          height: MediaQuery.of(context).size.height / 3,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/illustration.png'))),
+                        )),
+                    Column(
+                      children: <Widget>[
+                        FadeAnimation(
+                            1.5,
+                            MaterialButton(
+                              minWidth: double.infinity,
+                              height: 60,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                            1.6,
+                            Container(
+                              padding: EdgeInsets.only(top: 3, left: 3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.black),
+                                    top: BorderSide(color: Colors.black),
+                                    left: BorderSide(color: Colors.black),
+                                    right: BorderSide(color: Colors.black),
+                                  )),
+                              child: MaterialButton(
+                                minWidth: double.infinity,
+                                height: 60,
+                                onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SignupPage_Farmers()))
+                                },
+                                color: Colors.yellow,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Text(
+                                  "Sign up for Farmers",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                            1.5,
+                            MaterialButton(
+                              minWidth: double.infinity,
+                              height: 60,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SignupPage_Experts()));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Signup for Experts",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              ),
+                            )),
+                      ],
+                    )
+                  ],
                 ),
-              ],
-            ));
+              ),
+            ),
+          );
   }
 }
