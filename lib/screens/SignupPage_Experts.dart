@@ -1,12 +1,15 @@
 import 'package:croppred/screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupPage_Experts extends StatefulWidget {
   @override
   _SignupPage_ExpertsState createState() => _SignupPage_ExpertsState();
 }
 
+final _auth = FirebaseAuth.instance;
 String selectedExperty = 'Please choose an Experty';
 List<String> Experties = [
   'Please choose an Experty',
@@ -191,7 +194,32 @@ class _SignupPage_ExpertsState extends State<SignupPage_Experts> {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          await _auth
+                              .createUserWithEmailAndPassword(
+                                  email: signupEmailController.text,
+                                  password: signupPasswordController.text)
+                              .then((value) => FirebaseFirestore.instance
+                                      .collection('ExpertData')
+                                      .doc(value.user.uid)
+                                      .set({
+                                    "uid": value.user.uid,
+                                    "email": value.user.email,
+                                    "name": signupNameController.text,
+                                    "mobile_number":
+                                        signupmobileNumberController.text,
+                                    "experty": selectedExperty,
+                                    "isfarmer": false,
+                                  }))
+                              .then((value) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage())));
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
                       color: Colors.greenAccent,
                       elevation: 0,
                       shape: RoundedRectangleBorder(

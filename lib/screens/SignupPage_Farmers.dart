@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:croppred/screens/LoginPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
 
@@ -7,7 +10,7 @@ class SignupPage_Farmers extends StatefulWidget {
   _SignupPage_FarmersState createState() => _SignupPage_FarmersState();
 }
 
-
+final _auth = FirebaseAuth.instance;
 
 class _SignupPage_FarmersState extends State<SignupPage_Farmers> {
   TextEditingController signupNameController = new TextEditingController();
@@ -70,38 +73,10 @@ class _SignupPage_FarmersState extends State<SignupPage_Farmers> {
                 children: <Widget>[
                   FadeAnimation(
                       1.1,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Name",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupNameController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Name",
+                          obscureText: false,
+                          ControllerName: signupNameController)),
                   FadeAnimation(
                       1.2,
                       Column(
@@ -139,107 +114,22 @@ class _SignupPage_FarmersState extends State<SignupPage_Farmers> {
                       )),
                   FadeAnimation(
                       1.3,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Email",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupEmailController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Email",
+                          obscureText: false,
+                          ControllerName: signupEmailController)),
                   FadeAnimation(
                       1.4,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Password",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupPasswordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Password",
+                          obscureText: true,
+                          ControllerName: signupPasswordController)),
                   FadeAnimation(
                       1.5,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Confirm Password",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupConfirmPasswordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
-                  
+                      makeInput(
+                          label: "Confirm Password",
+                          obscureText: true,
+                          ControllerName: signupConfirmPasswordController)),
                 ],
               ),
               FadeAnimation(
@@ -257,7 +147,31 @@ class _SignupPage_FarmersState extends State<SignupPage_Farmers> {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          await _auth
+                              .createUserWithEmailAndPassword(
+                                  email: signupEmailController.text,
+                                  password: signupPasswordController.text)
+                              .then((value) => FirebaseFirestore.instance
+                                      .collection('FarmerData')
+                                      .doc(value.user.uid)
+                                      .set({
+                                    "uid": value.user.uid,
+                                    "email": value.user.email,
+                                    "name": signupNameController.text,
+                                    "mobile_number":
+                                        signupmobileNumberController.text,
+                                    "isfarmer": true,
+                                  }))
+                              .then((value) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage())));
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
                       color: Colors.greenAccent,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -293,6 +207,36 @@ class _SignupPage_FarmersState extends State<SignupPage_Farmers> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget makeInput({label, obscureText = false, ControllerName}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          controller: ControllerName,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+      ],
     );
   }
 }

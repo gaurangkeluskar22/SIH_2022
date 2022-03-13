@@ -16,19 +16,30 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  //FirebaseAuth auth = FirebaseAuth.instance;
-  bool auth = false;
-  bool isLoading = false;
-  PageController pageController;
+final _auth = FirebaseAuth.instance;
+User user;
 
-  ///
+class _HomePageState extends State<HomePage> {
+  bool isAuth = false;
+  bool isLoading = true;
+  PageController pageController;
   int pageIndex = 0;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 0);
+
+    user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -50,7 +61,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return auth  ? buildHomeScreen() : buildLoginScreen();
+    print(_auth);
+    return isAuth ? buildHomeScreen() : buildLoginScreen();
   }
 
   Widget buildHomeScreen() {

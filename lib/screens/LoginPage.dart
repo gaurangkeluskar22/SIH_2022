@@ -8,6 +8,8 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+final _auth = FirebaseAuth.instance;
+
 class _LoginPageState extends State<LoginPage> {
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                             onPressed: () => {
-                              FirebaseAuth.instance
+                              _auth
                                   .signInWithEmailAndPassword(
                                       email: loginEmailController.text,
                                       password: loginPasswordController.text)
@@ -124,6 +126,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       )),
+                  FadeAnimation(
+                      1.5,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Don't have an account?"),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            },
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ))
                 ],
               ),
             ),
