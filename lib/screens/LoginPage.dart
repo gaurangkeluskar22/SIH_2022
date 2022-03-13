@@ -1,6 +1,7 @@
-
+import 'package:croppred/screens/HomePage.dart';
 import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -67,72 +68,16 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         FadeAnimation(
                             1.2,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black87),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                TextField(
-                                  controller: loginEmailController,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 10),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey[400])),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey[400])),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                              ],
-                            )),
+                            makeInput(
+                                label: "Email",
+                                obscureText: false,
+                                ControllerName: loginEmailController)),
                         FadeAnimation(
                             1.3,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Password",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black87),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                TextField(
-                                  obscureText: true,
-                                  controller: loginPasswordController,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 10),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey[400])),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey[400])),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                              ],
-                            )),
+                            makeInput(
+                                label: "Password",
+                                obscureText: true,
+                                ControllerName: loginPasswordController)),
                       ],
                     ),
                   ),
@@ -163,6 +108,18 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                             onPressed: () => {
+                              FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: loginEmailController.text,
+                                      password: loginPasswordController.text)
+                                  .then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              }).onError((error, stackTrace) {
+                                print("Error ${error.toString()}");
+                              }),
                             },
                           ),
                         ),
@@ -182,6 +139,36 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget makeInput({label, obscureText = false, ControllerName}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          controller: ControllerName,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+      ],
     );
   }
 }

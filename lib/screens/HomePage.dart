@@ -9,6 +9,7 @@ import '../detection/DetectionPage.dart';
 import '../recommendation/RecommendationPage.dart';
 import '../Shared/progress.dart';
 import './LoginPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,9 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isAuth = false;
+  //FirebaseAuth auth = FirebaseAuth.instance;
+  bool auth = false;
   bool isLoading = false;
   PageController pageController;
+
+  ///
   int pageIndex = 0;
 
   @override
@@ -46,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return isAuth ? buildHomeScreen() : buildLoginScreen();
+    return auth  ? buildHomeScreen() : buildLoginScreen();
   }
 
   Widget buildHomeScreen() {

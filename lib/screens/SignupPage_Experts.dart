@@ -7,7 +7,7 @@ class SignupPage_Experts extends StatefulWidget {
   _SignupPage_ExpertsState createState() => _SignupPage_ExpertsState();
 }
 
-String selectedExperty='Please choose an Experty';
+String selectedExperty = 'Please choose an Experty';
 List<String> Experties = [
   'Please choose an Experty',
   'Apple',
@@ -89,38 +89,10 @@ class _SignupPage_ExpertsState extends State<SignupPage_Experts> {
                 children: <Widget>[
                   FadeAnimation(
                       1.1,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Name",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupNameController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Name",
+                          obscureText: false,
+                          ControllerName: signupNameController)),
                   FadeAnimation(
                       1.2,
                       Column(
@@ -158,106 +130,22 @@ class _SignupPage_ExpertsState extends State<SignupPage_Experts> {
                       )),
                   FadeAnimation(
                       1.3,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Email",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupEmailController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Email",
+                          obscureText: false,
+                          ControllerName: signupEmailController)),
                   FadeAnimation(
                       1.4,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Password",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupPasswordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Password",
+                          obscureText: true,
+                          ControllerName: signupPasswordController)),
                   FadeAnimation(
                       1.5,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Confirm Password",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black87),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextField(
-                            controller: signupConfirmPasswordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[400])),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      )),
+                      makeInput(
+                          label: "Confirm Password",
+                          obscureText: true,
+                          ControllerName: signupConfirmPasswordController)),
                   FadeAnimation(
                       1.6,
                       Column(
@@ -339,6 +227,36 @@ class _SignupPage_ExpertsState extends State<SignupPage_Experts> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget makeInput({label, obscureText = false, ControllerName}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          controller: ControllerName,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400])),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+      ],
     );
   }
 }
